@@ -8,7 +8,7 @@ const questions = () => {
     return inquirer.prompt([
         {
             type: 'input',
-            name:'project title',
+            name:'title',
             message:'What is the title of your project?'
         },
         {
@@ -18,7 +18,7 @@ const questions = () => {
         },
         {
             type: 'input',
-            name: 'installation',
+            name: 'install',
             message: 'Enter an explanation how to install the software, or commands for the program',
         },
         {
@@ -35,7 +35,7 @@ const questions = () => {
                 'Apache 2.0',
                 'Mozilla',
                 'Boost Software 1.0',
-                'GPL'
+                'ISC'
                 
             ]
         },
@@ -46,7 +46,7 @@ const questions = () => {
         },
         {
             type: 'input',
-            name: 'tests',
+            name: 'testing',
             message: 'Enter any testing instructions or comands to be run to run tests',
         },
         {
@@ -64,12 +64,17 @@ const questions = () => {
 
 // function to write README file
 function writeToFile(fileName, data) {
-
+    fs.writeToFile(fileName, generateMarkdown(data), function (err) {
+        if (err) {
+            return console.log(err);
+        }
+    });
 };
 
 //  function to initialize app
 function init() {
-   
+   questions()
+    .then((data) => writeToFile('README.md', generateMarkdown(data)))
 }
 
 // Function call to initialize app
