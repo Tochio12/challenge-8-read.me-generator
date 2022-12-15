@@ -59,22 +59,24 @@ const questions = () => {
             name: 'email',
             message: 'What is your email address?',
         },
+        {
+            type: 'input',
+            name: 'fileName',
+            message: 'Whay do want to name this readme?',
+        },
     ])
 };
 
 // function to write README file
 function writeToFile(fileName, data) {
-    fs.writeToFile(fileName, generateMarkdown(data), function (err) {
-        if (err) {
-            return console.log(err);
-        }
-    });
+       fs.appendFile(`${fileName}.md`, data, 
+    (err) => err ? console.error(err) : console.log(`${fileName}.md has been generated.`))
 };
 
 //  function to initialize app
-function init() {
-   questions()
-    .then((data) => writeToFile('README.md', generateMarkdown(data)))
+async function init() {
+    let answers = await questions();
+    writeToFile((answers.fileName),(generateMarkdown(answers)));
 }
 
 // Function call to initialize app
